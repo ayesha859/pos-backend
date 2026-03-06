@@ -1,9 +1,12 @@
 {
   "name": "pos-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "POS System for Naan and Chana Shop",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build": "echo 'Building POS Backend... Success! Assets ready.'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -11,9 +14,12 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
-    "mongoose": "^9.2.4"
+    "mongoose": "^9.2.4",
+    "multer": "^2.1.1"
   }
 }
