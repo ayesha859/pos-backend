@@ -1,4 +1,4 @@
-const Order = require('../models/0rder');
+const Order = require('../models/Order');
 const Product = require('../models/Product');
 
 exports.processCheckout = async (req, res) => {
