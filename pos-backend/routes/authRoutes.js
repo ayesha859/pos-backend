@@ -1,16 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-// Import the logic from the auth controller
-const { registerUser, loginUser } = require('../controllers/authController');
+// Import your auth controller logic
+const { addUser, loginUser } = require('../controllers/authController');
 
-// @route   POST /api/auth/register
-// @desc    Register a new user
-router.post('/register', registerUser);
+// Import your middlewares
+const { protect, admin } = require('../middleware/authMiddleware');
+
+// @route   POST /api/auth/add-user
+// @desc    Admin creates a new user (SECURED!)
+// NEW: Added protect and admin middlewares here
+router.post('/add-user', protect, admin, addUser);
 
 // @route   POST /api/auth/login
-// @desc    Log in a user & get token
+// @desc    Log in a user & get token (PUBLIC)
 router.post('/login', loginUser);
 
-// THIS IS THE MOST IMPORTANT LINE - It stops the crash!
 module.exports = router;

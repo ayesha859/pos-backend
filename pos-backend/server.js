@@ -14,11 +14,11 @@ app.use(express.json());
 
 // 2. Import ALL of your routes!
 const productRoutes = require('./routes/productRoutes');
-const authRoutes = require('./routes/authRoutes');   // <-- Added Auth Routes
-const orderRoutes = require('./routes/orderRoutes.js'); // <-- Added Order Routes
+const authRoutes = require('./routes/authRoutes');
+const orderRoutes = require('./routes/orderRoutes'); 
+const branchRoutes = require('./routes/branchRoutes'); // <-- NEW: Added Branch Routes
 
 // 3. The Admin Seeder Function
-// This creates your atanver2233@gmail.com account automatically when the server starts
 const seedAdmin = async () => {
   try {
     const adminExists = await User.findOne({ email: 'atanver2233@gmail.com' });
@@ -26,7 +26,7 @@ const seedAdmin = async () => {
       const adminUser = new User({
         name: 'Super Admin',
         email: 'atanver2233@gmail.com',
-        password: '12345678', // Your User model will automatically hash this!
+        password: '12345678',
         role: 'admin'
       });
       await adminUser.save();
@@ -42,14 +42,15 @@ const seedAdmin = async () => {
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('✅ MongoDB Connected Successfully');
-    seedAdmin(); // Run the seeder right after the database connects!
+    seedAdmin(); 
   })
   .catch((err) => console.log('❌ MongoDB Connection Error: ', err));
 
 // 4. Tell the app to use ALL the routes
 app.use('/api/products', productRoutes);
-app.use('/api/auth', authRoutes);     // <-- Tells the server to listen to /api/auth
-app.use('/api/orders', orderRoutes);  // <-- Tells the server to listen to /api/orders
+app.use('/api/auth', authRoutes);     
+app.use('/api/orders', orderRoutes);  
+app.use('/api/branches', branchRoutes); // <-- NEW: Tells the server to listen to /api/branches
 
 app.get('/', (req, res) => {
   res.send('POS Backend is running!');

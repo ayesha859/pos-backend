@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+
+// This was the broken line! It needed "orderController" at the end of the path.
 const { processCheckout, getDailySales } = require('../controllers/orderController');
 const { protect, admin } = require('../middleware/authMiddleware');
 

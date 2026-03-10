@@ -20,28 +20,34 @@ const UserSchema = new mongoose.Schema({
   },
   role: { 
     type: String, 
-    enum: ['customer', 'admin'], 
-    default: 'customer' 
+    enum: ['employee', 'admin', 'superadmin'], 
+    default: 'employee' 
+  },
+  isActive: { 
+    type: Boolean, 
+    default: true 
+  },
+  branchId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Branch', 
+    required: false 
   }
 }, { timestamps: true });
 
-// Pre-save hook: Simplified for modern Mongoose (No 'next' needed with async)
+// Pre-save hook to hash passwords
 UserSchema.pre('save', async function () {
-  // Only hash the password if it has been modified (or is new)
   if (!this.isModified('password')) {
     return;
   }
-
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
-    // No next() call here! Just finishing the async function tells Mongoose to continue.
   } catch (err) {
-    throw err; // Throwing error stops the save process correctly
+    throw err; 
   }
 });
 
-// Helper method to verify passwords during login
+// Helper method to verify passwords
 UserSchema.methods.comparePassword = async function (candidatePassword) {
   try {
     return await bcrypt.compare(candidatePassword, this.password);
@@ -50,4 +56,5 @@ UserSchema.methods.comparePassword = async function (candidatePassword) {
   }
 };
 
+// THIS LINE IS CRITICAL! It allows server.js to read this file.
 module.exports = mongoose.model('User', UserSchema);
