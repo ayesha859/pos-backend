@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+
 require('dotenv').config();
 
 // 1. Import our new models and bcrypt for the Admin setup
@@ -13,10 +14,12 @@ app.use(cors());
 app.use(express.json());
 
 // 2. Import ALL of your routes!
+const userRoutes = require('./routes/userRoutes'); // 🌟 NEW: Import User Routes
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
 const orderRoutes = require('./routes/orderRoutes'); 
-const branchRoutes = require('./routes/branchRoutes'); // <-- NEW: Added Branch Routes
+const branchRoutes = require('./routes/branchRoutes');
+app.use('/api/users', userRoutes); // 🌟 NEW: Tells the server to listen to /api/users // <-- NEW: Added Branch Routes
 
 // 3. The Admin Seeder Function
 const seedAdmin = async () => {

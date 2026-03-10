@@ -20,8 +20,8 @@ const UserSchema = new mongoose.Schema({
   },
   role: { 
     type: String, 
-    enum: ['employee', 'admin', 'superadmin'], 
-    default: 'employee' 
+    enum: ['employee', 'admin', 'superadmin', 'cashier', 'manager'], 
+    default: 'cashier' 
   },
   isActive: { 
     type: Boolean, 
@@ -34,7 +34,7 @@ const UserSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-// Pre-save hook to hash passwords
+// 🔥 FIXED: Removed all the "next" stuff! Just pure async/await now.
 UserSchema.pre('save', async function () {
   if (!this.isModified('password')) {
     return;
@@ -56,5 +56,4 @@ UserSchema.methods.comparePassword = async function (candidatePassword) {
   }
 };
 
-// THIS LINE IS CRITICAL! It allows server.js to read this file.
 module.exports = mongoose.model('User', UserSchema);
