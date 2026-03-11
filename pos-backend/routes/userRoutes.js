@@ -1,12 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const { createStaff } = require('../controllers/userController');
+
+// 🌟 NEW: We added getBranchStaff and getStaffByBranchName to the import
+const { 
+  createStaff, 
+  getBranchStaff, 
+  getStaffByBranchName 
+} = require('../controllers/userController');
 
 // Import your authentication middleware
-// (Adjust the path if your middleware is named differently!)
 const { protect } = require('../middleware/authMiddleware'); 
 
-// Only logged-in users (like your Admin) can hit this route
+// 1. Add a new staff member (Admin)
 router.post('/staff', protect, createStaff);
+
+// 2. Get all staff for the logged-in admin's branch
+router.get('/staff', protect, getBranchStaff);
+
+// 3. Get all staff for a specific branch by its name (Super Admin Only)
+router.get('/staff/branch/:branchName', protect, getStaffByBranchName);
 
 module.exports = router;
